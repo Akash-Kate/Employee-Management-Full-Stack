@@ -9,22 +9,24 @@ public class EmployeeMapper {
 	// and Employee entity to Employee DTO
 
 	public static EmployeeDto mapToEmployeeDto(Employee employee) {
-		return new EmployeeDto(
-				employee.getId(), 
+		return new EmployeeDto(employee.getId(), 
 				employee.getFirstName(), 
 				employee.getLastName(), 
-				employee.getEmail()
-		);
+				employee.getEmail(),
+				employee.getDepartment().getId()   // We have added the deptId inside the EmployeeDto class so here we need that id
+				);
 
 	}
 
 	public static Employee mapToEmployee(EmployeeDto employeeDto) {
-		return new Employee(
-				employeeDto.getId(), 
-				employeeDto.getFirstName(), 
-				employeeDto.getLastName(),
-				employeeDto.getEmail()
-			);
+		Employee employee = new Employee();
+
+		employee.setId(employeeDto.getId());
+		employee.setFirstName(employeeDto.getFirstName());
+		employee.setLastName(employeeDto.getLastName());
+		employee.setEmail(employeeDto.getEmail());
+		
+		return employee;
 
 	}
 }

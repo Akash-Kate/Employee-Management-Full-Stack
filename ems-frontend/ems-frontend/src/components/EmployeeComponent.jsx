@@ -2,19 +2,33 @@ import React, { useEffect, useState } from 'react'
 import { createEmployee, getEmployee, updateEmployee } from '../services/EmployeeService'
 
 import { useNavigate, useParams } from 'react-router-dom'
+import { getAllDepartments } from '../services/DepartmentService'
 
 const EmployeeComponent = () => {
 
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
+  const [departmentId, setDepartmentId] = useState('');
+  const [departments, setDepartments] = useState([]);
+
+  useEffect(() => {
+    getAllDepartments().then((response) => {
+      console.log("Check response",response);
+      setDepartments(response.data);
+    }).catch(error => {
+      console.error(error);
+    })
+
+  }, []);
 
   const { id } = useParams();
 
   const [erros, setErrors] = useState({
     firstName: '',
     lastName: '',
-    email: ''
+    email: '',
+    department: ''
   });
 
   const navigator = useNavigate();
@@ -155,6 +169,23 @@ const EmployeeComponent = () => {
                 >
                 </input>
                 {erros.email && <div className='invalid-feedback'>{erros.email}</div>}
+              </div>
+
+              <div className='form-group mb-2'>
+                <label className='form-label'>Select Department</label>
+                <select 
+                className={`form-control ${erros.department ? 'is-invalid' : ''}`}
+                value = {departmentId}
+                onChange={(e) => setDepartmentId(e.target.value)}
+                >
+                  <option value="Select Department">Select Department</option>
+                  {
+                    departments.map(dept => 
+                      <option key={dept.id} value={dept.id}>{dept.departmentName} </option>
+                    )
+                  }
+                </select>
+                { erros.department && <div className='invalid-feedback'>{erros.department}</div>}
               </div>
 
               <button className='btn btn-success' onClick={saveOrUpdateEmployee}>Submit</button>

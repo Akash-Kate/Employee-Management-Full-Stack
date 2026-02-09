@@ -8,19 +8,52 @@ public class EmployeeDto {
 	private String firstName;
 	private String lastName;
 	private String email;
+	private Long deptId;
+	
+	
+//	Why NOT put Department inside DTO?
+//
+//			If you did this:
+//
+//			private Department department;
+//
+//			You would face:
+//
+//			Infinite JSON recursion
+//
+//			LAZY loading exceptions
+//
+//			Tight coupling frontend ↔ DB
+//
+//			Bigger payloads
+//
+//			That’s why DTO uses IDs, not objects.
+//	
+	
 	
 	public EmployeeDto() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public EmployeeDto(Long id, String firstName, String lastName, String email) {
+
+	public EmployeeDto(Long id, String firstName, String lastName, String email, Long deptId) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.deptId = deptId;
 	}
-	
+
+	public Long getDeptId() {
+		return deptId;
+	}
+
+
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
+	}
+
 	public Long getId() {
 		return id;
 	}
