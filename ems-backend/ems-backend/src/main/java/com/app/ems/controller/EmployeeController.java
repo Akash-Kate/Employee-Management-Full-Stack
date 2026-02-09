@@ -22,14 +22,17 @@ import com.app.ems.service.IEmployeeService;
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
+
+    private final DepartmentController departmentController;
 	
 	
 	private IEmployeeService employeeService;
 	
 
-	public EmployeeController(IEmployeeService employeeService) {
+	public EmployeeController(IEmployeeService employeeService, DepartmentController departmentController) {
 		super();
 		this.employeeService = employeeService;
+		this.departmentController = departmentController;
 	}
 
 	// Build add employee rest api
@@ -40,7 +43,9 @@ public class EmployeeController {
 	// When you pass JSON body from postman or react make sure that the attributes match the EmployeeDto class fields
 	// Because we are using @RequestBody annotation and extracting the JOSn into EmployeeDto object
 	{
+		System.out.println("Check Department id "+empDto.getId());
 		EmployeeDto detachedEmp  = employeeService.createEmployee(empDto);
+		
 		return new ResponseEntity<>(detachedEmp, HttpStatus.CREATED);
 	}
 	

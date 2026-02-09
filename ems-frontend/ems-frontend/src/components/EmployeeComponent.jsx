@@ -9,7 +9,7 @@ const EmployeeComponent = () => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
-  const [departmentId, setDepartmentId] = useState('');
+  const [deptId, setdeptId] = useState('');   // deptId has to match with backedn DTO object field name
   const [departments, setDepartments] = useState([]);
 
   useEffect(() => {
@@ -40,6 +40,8 @@ const EmployeeComponent = () => {
         setFirstName(response.data.firstName);
         setLastName(response.data.lastName);
         setEmail(response.data.email);
+        setdeptId(response.data.deptId);
+
       }).catch(error => {
         console.error(error);
       })
@@ -52,8 +54,8 @@ const EmployeeComponent = () => {
 
     if (validateForm()) {
 
-      const employee = { firstName, lastName, email };
-      console.log(employee)
+      const employee = { firstName, lastName, email, deptId};
+      console.log("Check Employee Object ->",employee)
 
 
       if (id) {
@@ -100,6 +102,13 @@ const EmployeeComponent = () => {
       errorsCopy.email = '';
     } else {
       errorsCopy.email = 'Email is required';
+      valid = false;
+    }
+
+    if (deptId){
+      errorsCopy.department = '';
+    }else{
+      errorsCopy.department = 'Select Department';
       valid = false;
     }
 
@@ -174,11 +183,11 @@ const EmployeeComponent = () => {
               <div className='form-group mb-2'>
                 <label className='form-label'>Select Department</label>
                 <select 
+                value = {deptId}
                 className={`form-control ${erros.department ? 'is-invalid' : ''}`}
-                value = {departmentId}
-                onChange={(e) => setDepartmentId(e.target.value)}
+                onChange={(e) => setdeptId(e.target.value)}
                 >
-                  <option value="Select Department">Select Department</option>
+                  <option value="">Select Department</option>
                   {
                     departments.map(dept => 
                       <option key={dept.id} value={dept.id}>{dept.departmentName} </option>
